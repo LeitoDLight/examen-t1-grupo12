@@ -9,7 +9,7 @@ Parte correspondiente: Sincronización usando RabbitMQ (cálculo de Fibonacci en
 | Integrante | Parte |
 |---|---|
 | I201924621 Leonardo Fabricio Dorregaray Guevara | Consumidor RabbitMQ (Fibonacci) |
-| I201623265 Alberto Muzaurieta | Productor RabbitMQ (Fibonacci) |
+| I201623265 Alberto Muzaurieta | Productor RabbitMQ (envío de la lista de números) |
 
 ## Estructura del repositorio
 
@@ -41,10 +41,10 @@ examen-t1-grupo12/
 
 ### Pasos
 1. Levantar el proyecto **Consumidor** (`appGrupo12Consumidor`) — se conecta automáticamente a RabbitMQ y crea la cola `Grupo12Queue`.
-2. Levantar el proyecto **Productor** (`appGrupo12Productor`) en el puerto configurado.
+2. Levantar el proyecto **Productor** (`appGrupo12Productor`) en el puerto `8081`.
 3. Llamar al endpoint del Productor:
 
-GET http://localhost:PUERTO/api/fibonacci/send?numbers=1;2;15;8
+GET http://localhost:8081/api/numeros?numbers=1;2;15;8
 
 4. El Consumidor recibe el mensaje, espera 20 segundos y calcula la secuencia de Fibonacci, imprimiendo el resultado en consola.
 
@@ -55,3 +55,16 @@ Se probó publicando el mensaje `1;2;15;8` directamente en la cola `Grupo12Queue
 Mensaje recibido: 1;2;15;8
 Resultado Fibonacci: [1, 1, 610, 21]
 
+## Prueba realizada (Productor)
+
+Con RabbitMQ y el Consumidor levantados, se llamó al endpoint del paso 3 y el Productor respondió:
+
+```
+Lista enviada a RabbitMQ correctamente.
+```
+
+El mensaje `1;2;15;8` se publicó en `Grupo12Exchange` con la routing key `Grupo12Routing`, llegó a la cola `Grupo12Queue` y el Consumidor lo recibió:
+
+```
+Mensaje recibido: 1;2;15;8
+```
